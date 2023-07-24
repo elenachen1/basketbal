@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/pole_0.png</file>
+    </qresource>
+</RCC>
