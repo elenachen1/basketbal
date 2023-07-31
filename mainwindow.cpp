@@ -2,6 +2,11 @@
 #include "ui_mainwindow.h"
 #include <QPixmap>
 #include <QResizeEvent>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QPaintEvent>
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,8 +43,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Устанавливаем новый размер изображения
     ui->pole->setGeometry((width() - newWidth) / 2, (height() - newHeight) / 2, newWidth, newHeight);
+
+    setMouseTracking(true); // Включение отслеживания движения мыши
+
+
 }
 
+//масштабирование картинки относительно экрана
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
@@ -65,7 +75,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     // Устанавливаем новый размер изображения
     ui->pole->setGeometry((newSize.width() - newWidth) / 2, (newSize.height() - newHeight) / 2, newWidth, newHeight);
 }
-
+// проверка на изменение размера экрана
 void MainWindow::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::WindowStateChange)
@@ -82,7 +92,13 @@ void MainWindow::changeEvent(QEvent *event)
     }
     event->ignore();
 }
+
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+QLabel *MainWindow::getLabel() const
+{
+    return pole;
 }
