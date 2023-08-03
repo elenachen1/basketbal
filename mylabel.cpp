@@ -1,4 +1,5 @@
 #include "mylabel.h"
+#include <QDebug>
 
 MyLabel::MyLabel(QWidget *parent) : QLabel(parent)
 {
@@ -6,15 +7,15 @@ MyLabel::MyLabel(QWidget *parent) : QLabel(parent)
     m_isDrawing = false;
     // Создание кнопок
     m_updateButton = new QPushButton("Обновить", this);
-    m_clearButton = new QPushButton("Очистить", this);
+
 
     // Установка позиции кнопок
     m_updateButton->move(10, 10);
-    m_clearButton->move(10, 40);
+
 
     // Связывание кнопок с соответствующими слотами
     connect(m_updateButton, &QPushButton::clicked, this, &MyLabel::updateWindow);
-    connect(m_clearButton, &QPushButton::clicked, this, &MyLabel::clearWindow);
+
 
 
 }
@@ -53,11 +54,38 @@ void MyLabel::paintEvent(QPaintEvent *event)
 void MyLabel::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() & Qt::LeftButton) {
+
             // Проверка, находится ли курсор внутри круга
             if ((event->pos() - m_circlePosition).manhattanLength() <= m_circleRadius) {
                 m_circlePosition = event->pos();
                 if (m_isDrawing) {
                     m_linePoints.append(event->pos());
+
+
+
+                       // Создаем трансформацию, чтобы изменить систему координат
+                       QTransform transform;
+                       // Сдвигаем начало координат в центр
+                       transform.translate(circlePosition.x(), circlePosition.y());
+                       // Масштабируем координаты по обоим осям
+                       transform.scale(1, -1);
+
+                       qDebug() << "Contents of QVector<QPoint> in transformed coordinates:";
+
+                       for (int i = 0; i < m_linePoints.size(); ++i) {
+                           QPoint point = m_linePoints.at(i);
+                           // Применяем трансформацию к каждой точке
+                           QPoint transformedPoint = transform.map(point);
+                           qDebug() << "Transformed Point" << i + 1 << ": (" << transformedPoint.x() << ", " << transformedPoint.y() << ")";
+                       }
+
+
+//                    qDebug() << "Contents of QVector<QPoint>:";
+
+//                       for (int i = 0; i < m_linePoints.size(); ++i) {
+//                           QPoint point = m_linePoints.at(i);
+//                           qDebug() << "Point" << i + 1 << ": (" << point.x() << ", " << point.y() << ")";
+//                       }
                     update(); // Перерисовка окна
                 }
                 update(); // Перерисовка окна
@@ -89,10 +117,6 @@ void MyLabel::mousePressEvent(QMouseEvent *event)
 
 void MyLabel::updateWindow() {
     setCirclePosition(circlePosition);
-    update(); // Перерисовка окна
-}
-
-void MyLabel::clearWindow() {
     m_linePoints.clear(); // Очистка списка точек линии
     update(); // Перерисовка окна
 }

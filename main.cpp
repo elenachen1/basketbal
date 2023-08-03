@@ -7,13 +7,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+    QRect poleGeom;
 
 
 
-
-    QPoint position = QPoint(w.width()/2, w.height()/2);
+    poleGeom = w.getPoleGeometry();
+    QPoint position = QPoint(poleGeom.width()/2, poleGeom.height()/2);
     MyLabel label(&w);
-    label.setGeometry(w.x(), w.y(), w.width(), w.height());
+
+    label.setGeometry(poleGeom.x(), poleGeom.y(), poleGeom.width(), poleGeom.height());
     label.setCirclePosition(QPoint(label.width()/2, label.height()/2));
     label.setCircleRadius(10);
     label.setStartPosition(position);

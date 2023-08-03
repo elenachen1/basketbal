@@ -12,7 +12,7 @@ class MyLabel : public QLabel
 
 public slots:
     void updateWindow();
-    void clearWindow();
+
 
 
 public:
@@ -39,7 +39,7 @@ private:
     bool m_isDrawing;
     QVector<QPoint> m_linePoints;
     QPushButton *m_updateButton; // Кнопка обновления
-    QPushButton *m_clearButton; // Кнопка очистки
+
 
 };
 

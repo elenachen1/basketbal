@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setMouseTracking(true); // Включение отслеживания движения мыши
 
 
+
 }
 
 //масштабирование картинки относительно экрана
@@ -75,6 +76,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     // Устанавливаем новый размер изображения
     ui->pole->setGeometry((newSize.width() - newWidth) / 2, (newSize.height() - newHeight) / 2, newWidth, newHeight);
 }
+
+
 // проверка на изменение размера экрана
 void MainWindow::changeEvent(QEvent *event)
 {
@@ -92,13 +95,17 @@ void MainWindow::changeEvent(QEvent *event)
     }
     event->ignore();
 }
+QRect MainWindow::getPoleGeometry()
+{
+    return ui->pole->geometry();
+}
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-QLabel *MainWindow::getLabel() const
+QLabel *MainWindow::getLabel()
 {
     return pole;
 }
